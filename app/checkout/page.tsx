@@ -21,6 +21,9 @@ export default function CheckoutPage() {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
+  // 1. ADDED: Grab the live Render URL for the checkout process
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   // Load the cart safely to bypass strict React linter errors
   useEffect(() => {
     const cartData = localStorage.getItem("cart");
@@ -61,7 +64,8 @@ export default function CheckoutPage() {
     }));
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/orders/", {
+      // 2. UPDATED: Inject the dynamic API_URL here
+      const res = await fetch(`${API_URL}/api/orders/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,8 +13,12 @@ interface Product {
 }
 
 async function getProduct(id: string) {
+  // 1. ADDED: Grab the live Render URL or fall back to localhost
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+    // 2. UPDATED: Inject the dynamic API_URL into the fetch request
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
       cache: "no-store",
     });
 

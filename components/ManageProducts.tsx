@@ -21,9 +21,13 @@ export default function ManageProducts() {
     description: "",
   });
 
+  // 1. ADDED: Grab the live Render URL or fall back to localhost
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/products/");
+      // 2. UPDATED: Fetch products using the dynamic URL
+      const res = await fetch(`${API_URL}/api/products/`);
       if (!res.ok) throw new Error("Failed to load products");
       const data = await res.json();
       setProducts(data);
@@ -42,7 +46,8 @@ export default function ManageProducts() {
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/products/", {
+      // 3. UPDATED: Add new products to the dynamic URL
+      const res = await fetch(`${API_URL}/api/products/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +74,8 @@ export default function ManageProducts() {
       return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+      // 4. UPDATED: Delete products using the dynamic URL
+      const res = await fetch(`${API_URL}/api/products/${id}`, {
         method: "DELETE",
       });
 

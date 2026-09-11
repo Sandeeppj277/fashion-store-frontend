@@ -22,11 +22,15 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // 1. ADDED: Grab the live Render URL
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://127.0.0.1:8000/api/orders/", {
+      // 2. UPDATED: Inject the API_URL into the fetch request
+      const res = await fetch(`${API_URL}/api/orders/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

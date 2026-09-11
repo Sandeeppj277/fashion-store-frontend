@@ -11,13 +11,17 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // 1. ADDED: Grab the dynamic URL for the login process
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/users/login", {
+      // 2. UPDATED: Inject the API_URL into the fetch request
+      const res = await fetch(`${API_URL}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

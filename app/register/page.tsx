@@ -11,14 +11,17 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // 1. ADDED: Grab the dynamic URL for the registration process
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
     try {
-      // Send the new user data to your FastAPI backend
-      const response = await fetch("http://127.0.0.1:8000/api/users/register", {
+      // 2. UPDATED: Inject the API_URL into the fetch request
+      const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

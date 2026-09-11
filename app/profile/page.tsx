@@ -24,6 +24,9 @@ export default function OrderHistoryPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  // 1. ADDED: Grab the live Render URL
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   useEffect(() => {
     const fetchOrders = async () => {
       // 1. Get the auth token to prove the user is logged in
@@ -36,8 +39,8 @@ export default function OrderHistoryPage() {
       }
 
       try {
-        // 2. Fetch the user's specific orders from the backend
-        const res = await fetch("http://127.0.0.1:8000/api/orders/", {
+        // 2. UPDATED: Fetch the user's specific orders from the dynamic backend URL
+        const res = await fetch(`${API_URL}/api/orders/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -62,7 +65,7 @@ export default function OrderHistoryPage() {
     };
 
     fetchOrders();
-  }, [router]);
+  }, [router, API_URL]);
 
   if (loading) {
     return (
@@ -93,7 +96,7 @@ export default function OrderHistoryPage() {
       {orders.length === 0 && !error ? (
         <div className="bg-gray-50 rounded-3xl p-12 text-center border border-gray-100">
           <p className="text-gray-500 font-medium mb-4">
-            You haven@aps;t placed any orders yet.
+            You haven&apos;t placed any orders yet.
           </p>
         </div>
       ) : (

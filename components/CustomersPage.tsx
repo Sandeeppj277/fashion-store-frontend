@@ -13,11 +13,15 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // 1. ADDED: Grab the dynamic URL for the API
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://127.0.0.1:8000/api/users/", {
+      // 2. UPDATED: Inject the API_URL into the fetch request
+      const res = await fetch(`${API_URL}/api/users/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
