@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // 1. ADDED: Grab the dynamic URL for the login process
+  // 1. Grab the dynamic URL for the login process
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -20,16 +20,18 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // 2. UPDATED: Inject the API_URL into the fetch request
+      // 2. Convert JSON state into URL Encoded Form Data for FastAPI
+      const formData = new URLSearchParams();
+      formData.append("username", email); // FastAPI OAuth2 strictly expects 'username'
+      formData.append("password", password);
+
+      // 3. Send the request as application/x-www-form-urlencoded
       const res = await fetch(`${API_URL}/api/users/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: formData,
       });
 
       if (!res.ok) {
